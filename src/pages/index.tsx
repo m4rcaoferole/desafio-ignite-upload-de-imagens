@@ -22,16 +22,14 @@ interface GetImageResponse {
 }
 
 export default function Home(): JSX.Element {
-  const fetchImages = async ({
-    pageParam = null,
-  }): Promise<GetImageResponse> => {
+  async function fetchImages({ pageParam = null }): Promise<GetImageResponse> {
     const { data } = await api('/api/images', {
       params: {
         after: pageParam,
       },
     });
     return data;
-  };
+  }
 
   const {
     data,
@@ -45,11 +43,14 @@ export default function Home(): JSX.Element {
   });
 
   const formattedData = useMemo(() => {
-    const formated = data?.pages.flatMap(imageData => {
+    const formatted = data?.pages.flatMap(imageData => {
       return imageData.data.flat();
     });
 
-    return formated;
+    console.log(data?.pages);
+    console.log(formatted);
+
+    return formatted;
   }, [data]);
 
   if (isLoading && !Error) {
