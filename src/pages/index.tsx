@@ -47,17 +47,14 @@ export default function Home(): JSX.Element {
       return imageData.data.flat();
     });
 
-    console.log(data?.pages);
-    console.log(formatted);
-
     return formatted;
   }, [data]);
 
-  if (isLoading && !Error) {
+  if (isLoading && !isError) {
     return <Loading />;
   }
 
-  if (isLoading && Error) {
+  if (!isLoading && isError) {
     return <Error />;
   }
 
@@ -67,7 +64,16 @@ export default function Home(): JSX.Element {
 
       <Box maxW={1120} px={20} mx="auto" my={20}>
         <CardList cards={formattedData} />
-        {/* TODO RENDER LOAD MORE BUTTON IF DATA HAS NEXT PAGE */}
+
+        {hasNextPage && (
+          <Button
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            mt="6"
+          >
+            {isFetchingNextPage ? 'Carregando...' : 'Carregar mais'}
+          </Button>
+        )}
       </Box>
     </>
   );
